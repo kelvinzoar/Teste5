@@ -1,5 +1,4 @@
 using Questao5.Models;
-using System.Threading.Tasks;
 
 namespace Questao5.Repositories
 {

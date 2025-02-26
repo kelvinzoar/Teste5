@@ -1,6 +1,6 @@
 using NSubstitute;
 using Questao5.Application.Commands;
-using Questao5.Infrastructure.Persistence;
+using Questao5.Repositories;
 using Questao5.Models;
 using System.Threading.Tasks;
 using Xunit;

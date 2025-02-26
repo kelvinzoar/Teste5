@@ -1,4 +1,5 @@
 using MediatR;
+using Questao5.Models;
 
 namespace Questao5.Application.Queries
 {

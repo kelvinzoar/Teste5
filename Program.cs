@@ -6,8 +6,10 @@ using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container
+// Adicionando Controllers
 builder.Services.AddControllers();
+
+// Registrando MediatR
 builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
 
 // Configuração do SQLite
@@ -35,7 +37,7 @@ builder.Services.AddSwaggerGen(c =>
 
 var app = builder.Build();
 
-// Configure o pipeline HTTP
+// Configuração do Swagger
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -50,7 +52,7 @@ app.UseAuthorization();
 app.MapControllers();
 
 // Inicializar o banco de dados SQLite
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
+#pragma warning disable CS8602
 app.Services.GetService<IDatabaseBootstrap>()?.Setup();
 #pragma warning restore CS8602
 

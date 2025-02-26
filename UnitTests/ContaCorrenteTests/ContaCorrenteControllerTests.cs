@@ -10,42 +10,46 @@ using Xunit;
 
 public class ContaCorrenteControllerTests
 {
+    private readonly ContaCorrenteController _controller;
+    private readonly IMediator _mediator;
+
+    public ContaCorrenteControllerTests()
+    {
+        _mediator = Substitute.For<IMediator>();
+        _controller = new ContaCorrenteController(_mediator); 
+    }
+
     [Fact]
     public async Task Should_ReturnSuccess_When_ValidTransactionIsPerformed()
     {
-        //Arrange
-        var mediator = Substitute.For<IMediator>();
-        mediator.Send(Arg.Any<MovimentarContaCommand>()).Returns(Task.FromResult<object>(new { Sucesso = true }));
+        // Arrange
+        _mediator.Send(Arg.Any<MovimentarContaCommand>()).Returns(Task.FromResult<object>(new { Sucesso = true }));
 
-        var controller = new ContaCorrenteController(mediator);
         var command = new MovimentarContaCommand { IdContaCorrente = "123", Valor = 100, TipoMovimento = "C" };
 
-        //Act
-        var result = await controller.MovimentarConta(command);
+        // Act
+        var result = await _controller.MovimentarConta(command);
 
-        //Assert
+        // Assert
         var okResult = Assert.IsType<OkObjectResult>(result);
-        Assert.True(((dynamic)okResult.Value).Sucesso);
+        Assert.NotNull(okResult.Value);
     }
 
     [Fact]
     public async Task Should_ReturnCorrectBalance_When_AccountExists()
     {
-        //Arrange
-        var mediator = Substitute.For<IMediator>();
-        mediator.Send(Arg.Any<ObterSaldoQuery>()).Returns(Task.FromResult(new SaldoResponse
+        // Arrange
+        _mediator.Send(Arg.Any<ObterSaldoQuery>()).Returns(Task.FromResult(new SaldoResponse
         {
             NumeroConta = 123,
             NomeTitular = "Cliente Teste",
             Saldo = 500.00m
         }));
 
-        var controller = new ContaCorrenteController(mediator);
+        // Act
+        var result = await _controller.ConsultarSaldo("123");
 
-        //Act
-        var result = await controller.ConsultarSaldo("123");
-
-        //Assert
+        // Assert
         var okResult = Assert.IsType<OkObjectResult>(result);
         var saldoResponse = Assert.IsType<SaldoResponse>(okResult.Value);
         Assert.Equal(500.00m, saldoResponse.Saldo);

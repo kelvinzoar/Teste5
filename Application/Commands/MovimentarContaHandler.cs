@@ -1,5 +1,5 @@
 using MediatR;
-using Questao5.Infrastructure.Persistence;
+using Questao5.Repositories;
 using Questao5.Models;
 using System.Threading;
 using System.Threading.Tasks;
@@ -23,7 +23,16 @@ namespace Questao5.Application.Commands
 			if (!await _repository.ContaAtiva(request.IdContaCorrente))
 				return new ErrorResponse { TipoErro = "INACTIVE_ACCOUNT", Mensagem = "Conta inativa." };
 
-			await _repository.RegistrarMovimento(request);
+			var movimentacao = new MovimentacaoRequest
+			{
+				ChaveIdempotencia = request.ChaveIdempotencia,
+				IdContaCorrente = request.IdContaCorrente,
+				TipoMovimento = request.TipoMovimento,
+				Valor = request.Valor
+			};
+
+			await _repository.RegistrarMovimento(movimentacao);
+
 			return new { Sucesso = true };
 		}
 	}

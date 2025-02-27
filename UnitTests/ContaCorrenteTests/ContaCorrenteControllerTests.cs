@@ -5,6 +5,7 @@ using Questao5.Controllers;
 using Questao5.Application.Commands;
 using Questao5.Application.Queries;
 using Questao5.Models;
+using Questao5.Application.Errors;
 using System.Threading.Tasks;
 using Xunit;
 

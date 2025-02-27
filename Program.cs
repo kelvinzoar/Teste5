@@ -31,8 +31,11 @@ builder.Services.AddSwaggerGen(c =>
     {
         Title = "API de Contas Correntes",
         Version = "v1",
-        Description = "API para movimentação e consulta de contas correntes"
+        Description = "API para movimentação e consulta de contas correntes."
     });
+
+    // Habilita o suporte para anotações
+    c.EnableAnnotations();
 });
 
 var app = builder.Build();

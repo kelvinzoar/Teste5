@@ -5,6 +5,7 @@ using Questao5.Repositories;
 using Questao5.Models;
 using System.Threading.Tasks;
 using System.Threading;
+using Questao5.Application.Errors;
 
 namespace Questao5.UnitTests.ObterSaldoHandlerTests
 {
@@ -34,7 +35,8 @@ namespace Questao5.UnitTests.ObterSaldoHandlerTests
 			var result = await _handler.Handle(query, CancellationToken.None);
 
 			// Assert
-			_repository.Received(1).ObterSaldo("123");
+			await _repository.Received(1).ObterSaldo("123");
+			Assert.NotNull(result);
 			Assert.Equal(123, result.NumeroConta);
 			Assert.Equal("Cliente Teste", result.NomeTitular);
 			Assert.Equal(500.00m, result.Saldo);

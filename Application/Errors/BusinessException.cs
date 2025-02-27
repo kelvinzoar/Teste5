@@ -1,5 +1,3 @@
-using System;
-
 namespace Questao5.Application.Errors
 {
     public class BusinessException : Exception
